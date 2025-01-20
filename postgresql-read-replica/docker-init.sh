@@ -1,23 +1,18 @@
-echo "Clearing data"
-rm -rf ../postgresql-rp/data/*
-rm -rf ../postgresql-rp/data-slave/*
-docker-compose down
+docker-compose up -d  postgres_main
 
-docker-compose up -d  postgres_master
-
-echo "Starting postgres_master node..."
-sleep 20  # Waits for master note start complete
+echo "Starting postgres_main node..."
+sleep 20  # Waits for main note start complete
 
 echo "Prepare replica config..."
-docker exec -it postgres_master sh /etc/postgresql/init-script/init.sh
-echo "Restart master node"
-docker-compose restart postgres_master
+docker exec -it postgres_main sh /etc/postgresql/init-script/init.sh
+echo "Restart main node"
+docker-compose restart postgres_main
 sleep 5
 
-echo "Starting slave node..."
-docker-compose up -d  postgres_slave
+echo "Starting replica node..."
+docker-compose up -d  postgres_replica
 sleep 20  # Waits for note start complete
 
 echo "Done"
 
-docker exec -it postgres_master sh /etc/postgresql/init-script/validate.sh
+docker exec -it postgres_main sh /etc/postgresql/init-script/validate.sh

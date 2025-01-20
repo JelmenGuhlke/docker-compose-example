@@ -1,5 +1,5 @@
 /postgresql-read-replica/data
-/postgresql-read-replica/data-slave
+/postgresql-read-replica/data-replica
 
 ######################
 # IntelliJ
